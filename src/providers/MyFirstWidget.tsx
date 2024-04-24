@@ -24,7 +24,7 @@ export const MyFirstWidget: React.FC = () => {
         const classifiers = await RealityDataApi.getAvailableClassifierListForViewport(viewport);
         if(classifiers) {
           setClassifier(classifiers[0].value);
-          setHiliteColor(viewport.hilite.color);
+          onColorChange(ColorDef.green);
         }
       }
      
@@ -75,7 +75,7 @@ export const MyFirstWidget: React.FC = () => {
 
     
     <div>
-      This is my first widget, hello Ibrahim 
+      This is my first widget, hello I'm Ibrahim 
       <ToggleSwitch onChange={togglePhillyReality} label='Philly Reality Data' />
       <p></p>
       <Flex>
