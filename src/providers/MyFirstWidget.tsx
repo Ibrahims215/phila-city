@@ -5,6 +5,8 @@ import "./MyFirstWidget.css";
 import { Button, Flex, ToggleSwitch } from "@itwin/itwinui-react";
 import { ColorDef, ContextRealityModelProps } from "@itwin/core-common";
 import { ColorPickerButton } from "@itwin/imodel-components-react";
+import { Id64Array } from "@itwin/core-bentley";
+import { BuildingGroup, BuildingGroupListItem } from "./BuildingGroupComponent";
 export const MyFirstWidget: React.FC = () => {
   const viewport = useActiveViewport();
 
@@ -13,8 +15,8 @@ export const MyFirstWidget: React.FC = () => {
   const [realitonyModels, setRealityModelList] = React.useState<ContextRealityModelProps[]>([]);
   const [classicfier, setClassifier] = React.useState<string>("");
   const [listOfThings, setlistOfThings] = React.useState<string[]>([]) 
-  const [hiliteColor, setHiliteColor] = React.useState<ColorDef>(ColorDef.green
-  );
+  const [hiliteColor, setHiliteColor] = React.useState<ColorDef>(ColorDef.green);
+  const [selectedBuildings, setSelectedbuildings] = React. useState<BuildingGroup[]>([])
   
   useEffect(() => {
     const asyncInitialize = async () => {
@@ -46,31 +48,38 @@ export const MyFirstWidget: React.FC = () => {
     }
   }
 
-  const buttonClicked = async () => {
-    setlistOfThings([...listOfThings, "Purple"])
-
-
+  const handleItemChange = (oldItem: BuildingGroup, newItem: BuildingGroup) => {
+    const newList = selectedBuildings.map((item) => item.name === oldItem.name ? newItem : item);
+    setSelectedbuildings(newList);
   }
-  const removeTop= async () => {
-    setlistOfThings(listOfThings.slice(1))
 
+  const buildingGroups: JSX.Element[] = []
+  selectedBuildings.forEach( (value: BuildingGroup) => {
+    buildingGroups.push(<BuildingGroupListItem item={value} handleItemChange={handleItemChange} />);
+  });
 
-  }
-  const onColorChange = async (newColor: ColorDef) => {
+const addNewGroup = async () => {
+  const newSelectedBuildings = [...selectedBuildings,
+    {name: "new"+ selectedBuildings.length, buildings: [], color: ColorDef.green}]
+    setSelectedbuildings (newSelectedBuildings)
+}
+
+const buidingGrouplist = selectedBuildings.map (
+  (bg: BuildingGroup) => <BuildingGroupListItem item={bg} handleItemChange={handleItemChange}/>
+)
+  
+  
+  async function onColorChange(newColor: ColorDef) {
     if (viewport) {
-      viewport.hilite = {...viewport.hilite, color: newColor};
-    }  
-    setHiliteColor (newColor)
+      viewport.hilite = { ...viewport.hilite, color: newColor };
+    }
+    setHiliteColor(newColor);
   }
 
 
-  async function clickButton() {
-    setlistOfThings([...listOfThings, "bip"]);
 
 
-  }
-
-  const thingList = listOfThings.map((thing: string) => <li>{thing}</li>);
+  
   return (
 
     
@@ -82,15 +91,13 @@ export const MyFirstWidget: React.FC = () => {
       <ColorPickerButton initialColor={hiliteColor} onColorPick={onColorChange}></ColorPickerButton> 
        Select hilite color 
        </Flex>
-      <p></p>
-      <Button onClick={buttonClicked}>Money</Button>
-      <Button onClick={clickButton}>Green</Button>
-      <Button onClick={removeTop}>delete</Button>
-      
-      <ul>
-        {thingList}
-      </ul>
+       <Button onClick={addNewGroup}>Add New Group</Button>
+       {buildingGroups}
     </div>
   );
 };
+
+function setHiliteColor(newColor: ColorDef) {
+  throw new Error("Function not implemented.");
+}
 
