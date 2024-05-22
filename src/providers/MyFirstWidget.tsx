@@ -5,7 +5,6 @@ import "./MyFirstWidget.css";
 import { Button, Flex, ToggleSwitch } from "@itwin/itwinui-react";
 import { ColorDef, ContextRealityModelProps } from "@itwin/core-common";
 import { ColorPickerButton } from "@itwin/imodel-components-react";
-import { Id64Array } from "@itwin/core-bentley";
 import { BuildingGroup, BuildingGroupListItem } from "./BuildingGroupComponent";
 export const MyFirstWidget: React.FC = () => {
   const viewport = useActiveViewport();
@@ -14,9 +13,8 @@ export const MyFirstWidget: React.FC = () => {
   const [initialized, setInitialized] = React.useState<boolean>(false);
   const [realitonyModels, setRealityModelList] = React.useState<ContextRealityModelProps[]>([]);
   const [classicfier, setClassifier] = React.useState<string>("");
-  const [listOfThings, setlistOfThings] = React.useState<string[]>([]) 
   const [hiliteColor, setHiliteColor] = React.useState<ColorDef>(ColorDef.green);
-  const [selectedBuildings, setSelectedbuildings] = React. useState<BuildingGroup[]>([])
+  const [selectedBuildings, setSelectedbuildings] = React.useState<BuildingGroup[]>([])
   
   useEffect(() => {
     const asyncInitialize = async () => {
@@ -64,11 +62,7 @@ const addNewGroup = async () => {
     setSelectedbuildings (newSelectedBuildings)
 }
 
-const buidingGrouplist = selectedBuildings.map (
-  (bg: BuildingGroup) => <BuildingGroupListItem item={bg} handleItemChange={handleItemChange}/>
-)
-  
-  
+
   async function onColorChange(newColor: ColorDef) {
     if (viewport) {
       viewport.hilite = { ...viewport.hilite, color: newColor };
@@ -97,7 +91,5 @@ const buidingGrouplist = selectedBuildings.map (
   );
 };
 
-function setHiliteColor(newColor: ColorDef) {
-  throw new Error("Function not implemented.");
-}
+
 

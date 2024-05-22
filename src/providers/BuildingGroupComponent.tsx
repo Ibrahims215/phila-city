@@ -1,9 +1,9 @@
 import { Id64Array } from "@itwin/core-bentley";
 import React from "react";
-import { Button, Flex, ToggleSwitch } from "@itwin/itwinui-react"; 
 import { useActiveViewport } from "@itwin/appui-react";
 import { ColorPickerButton } from "@itwin/imodel-components-react";
 import { ColorDef } from "@itwin/core-common";
+import { Button } from "@itwin/itwinui-react";
 
 
 export interface BuildingGroup {
